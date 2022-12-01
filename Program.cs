@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿class Program{
+
+    static void Main(string[] args){
+
+        Basics basics = new Basics();
+        basics.variable_basics();
+
+        DiceGame game = new DiceGame();
+        game.play();
+
+    }
+   
+}     
