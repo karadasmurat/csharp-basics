@@ -1,6 +1,69 @@
 class Basics{
 
+/* 
+  This is a long comment 
+  that spans multiple lines
+  just to prove that it can
+  be done.
+
+  Never trust comments!
+  Given the comments, you might be able to figure out what the code is doing 
+  (assuming the comments accurately describe the current state and were updated as the code was updated).
+  Do not unnecessarily explain the obvious functionality of individual lines of code. These are considered low-quality comments.
+
+
+  What is an expression?
+  An expression is any combination of values (literal or variable), operators, and methods that return a single value. 
+  A statement is a complete instruction in C#, and statements are composed of one or more expressions.
+*/
+
+    public void conversionBasics(){
+
+        // Would attempting to change the value's data type result in 
+        //  i.  a loss of information?
+        //      The term "narrowing conversion" means that you're attempting to convert a value from a data type that can hold more information to a data type that can hold less information. 
+        //      In this case, you'll need to perform a cast. Casting is an instruction to the C# compiler that you know precision may be lost, but you're willing to accept it.
+        //  ii. an exception at runtime?
+
+        // To perform data conversion, you can use one of several techniques:
+        //  * Use a helper method on the data type
+        //        Most of the numeric data types have a Parse() method,
+        //  * Use a helper method on the variable
+        //        Every data type variable has a ToString() method. 
+        //  * Use the Convert class' methods
+
+        byte myByte = 100;
+        int myInt = myByte;     // Since any byte value can easily fit inside of an int, the compiler implicitly converts.
+
+        int x = 333;
+        //byte bx = x;          // Cannot implicitly convert type 'int' to 'byte'
+        byte bx = (byte)x;      // Narrowing conversion, we'll need to perform a cast.
+
+        Console.WriteLine($"byte: {myByte} int: {myInt}");
+        Console.WriteLine($"int: {x} byte: {bx}");          // int: 333 byte: 77 !!!
+
+
+        int firstNum = 5;
+        int secondNum = 7;
+        string message = firstNum.ToString() + secondNum.ToString();
+        Console.WriteLine(message);     // 57
+
+        string firstStr = "5";
+        string secondStr = "7";
+        int sum = int.Parse(firstStr) + int.Parse(secondStr);
+        int result = Convert.ToInt32(firstStr) + Convert.ToInt32(secondStr);        // Convert class' methods
+        Console.WriteLine($"int.Parse(): {sum} Convert.ToInt32(): {result}");         // 12
+
+    }
     public void variable_basics(){
+
+        // Choose a descriptive name for variables that describe their purpose and intent.
+        // The code you write should communicate your intent to both the compiler and to other developers who may read your code. 
+        // Because you're likely to be the one reading your own code, sometimes months after you originally wrote it, you should focus on writing code that can be easily understood. 
+        // Write code that is easily readable and understandable.
+
+        // Variable scope is the visibility of the variable to the other code in your application. 
+        // A locally scoped variable is only accessible inside of the code block in which it's defined.
         
         string firstName = "Bob";
         int widgetsSold = 7;
@@ -83,5 +146,269 @@ class Basics{
         Console.WriteLine($"Second roll: {roll2}");     
         Console.WriteLine($"Third roll: {roll3}"); 
 
+    }
+
+    public void arrayBasics(){
+
+        // imagine a single variable that can hold many values.
+        // An array is a sequence of individual data elements accessible through a single variable name. (multiple values of the same data type.)
+        // You use a zero-based numeric index to access each element of an array. 
+
+
+        // you can initialize a new array at the time you declare it using a special syntax featuring curly braces.
+        string[] IDs = { "A123", "B456", "C789" };
+
+        // Declare a new array
+        string[] fraudulentOrderIDs = new string[3];
+
+        // Assign values to elements on an array
+        fraudulentOrderIDs[0] = "A123";
+        fraudulentOrderIDs[1] = "B456";
+        fraudulentOrderIDs[2] = "C789";
+
+        // Retrieve values of an array
+        Console.WriteLine($"First: {fraudulentOrderIDs[0]}");
+
+        // Reassign the value of an array
+        fraudulentOrderIDs[0] = "F000";
+        Console.WriteLine($"Reassign First: {fraudulentOrderIDs[0]}");
+
+        // To determine the size of an array, you can use the Length property
+        Console.WriteLine($"There are {fraudulentOrderIDs.Length} fraudulent orders to process.");
+
+        // Looping through an array using foreach
+        string[] names = { "Bob", "Conrad", "Grant" };
+        foreach (string name in names){
+            Console.WriteLine(name);
+        }
+
+
+        // The Array class has methods that can manipulate an array.
+        string[] pallets = { "B14", "A11", "B12", "A13" };
+        Array.Sort(pallets);
+        Array.ForEach(pallets, Console.WriteLine);
+
+        Array.Reverse(pallets);
+        Array.ForEach(pallets, Console.WriteLine);
+
+        Array.Resize(ref pallets, 6);
+        Console.WriteLine($"Resizing 6 ... count: {pallets.Length}");
+
+        string value = "abc123";
+        char[] valueArray = value.ToCharArray();
+
+
+        // Question: 
+        // Parse Order IDs out of a string containing a sequence of incoming orders (the orderStream). Then, you'll print each Order ID that starts with the letter 'B'.
+        string orderStream = "B123,C234,A345,C15,B177,G3003,C235,B179";
+
+        string[] orders = orderStream.Split(',');
+        foreach (string order in orders){
+            if(!order.StartsWith("B")) continue;
+            Console.WriteLine(order);
+        }
+    }
+
+
+    public void formattingBasics(){
+
+        // String interpolation is a newer technique that simplifies composite formatting. 
+        string first = "Hello";
+        string second = "World";
+        Console.WriteLine($"{first} {second}!");
+
+        int invoiceNumber = 1201;
+        decimal productMeasurement = 25.4568m;
+        decimal subtotal = 2750.00m;
+        decimal taxPercentage = .15825m;
+        decimal total = 3185.19m;
+
+        Console.WriteLine();
+        Console.WriteLine("Details".PadLeft(14, '*'));      // The PadLeft() method will add blank spaces (or specified chars) to the left-hand side of the string so that the total number of characters equals the argument.
+        Console.WriteLine($"Invoice Number: {invoiceNumber}");
+        Console.WriteLine($"   Measurement: {productMeasurement:N3} mg");
+        Console.WriteLine($"     Sub Total: {subtotal:C}");
+        Console.WriteLine($"           Tax: {taxPercentage:P2}");
+        Console.WriteLine($"     Total Due: {total:C}");        // ₺3.185,19
+
+        string formatted_m = $"{total:C}".PadLeft(12, '+');       // +++₺3.185,19
+        Console.WriteLine(formatted_m);
+    }
+
+    public void stringBasics(){
+
+        // before checking strings for equality, 
+        // remove remove leading or trailing blank spaces and make sure both strings are all upper-case or all lower-case
+        string value1 = " a";
+        string value2 = "A ";
+        Console.WriteLine(value1.Trim().ToLower() == value2.Trim().ToLower());
+
+        // Word reversal challenge BEGIN
+        string pangram = "The quick brown fox jumps over the lazy dog";
+
+        string[] words = pangram.Split(' ');
+
+        string message = "";
+        foreach (var word in words){
+
+            char[] chars = word.ToCharArray();
+            Array.Reverse(chars);
+            message += new string(chars) + ' ';
+        }
+
+        Console.WriteLine(message);
+        //  Word reversal challenge END
+
+    }
+    public static char letterOfScore(double score){
+
+        char grade = '-';
+
+        // If you realize you only have one line of code in a code block, you can remove the curly braces and white space.
+        // if(score >= 90){
+        //     grade = 'A';
+        // } 
+
+        if(score >= 90) grade = 'A';
+        else if(score >= 80) grade = 'B';
+        else if(score >= 70) grade = 'C';
+        else if(score >= 60) grade = 'D';
+        else grade = 'F';
+
+        return grade;
+
+    }
+
+    // The switch is best used when you have a single value you want to match against many possible values
+    public static string getEmployeeTitle(int employeeLevel){
+        string title = "Employee";
+        switch (employeeLevel)
+        {
+            case 100:
+                title = "Junior Associate";
+                break;
+            case 200:
+                title = "Senior Associate";
+                break;
+            case 300:   //  use fall through
+            case 400:
+                title = "Manager";
+                break;
+            case 500:   //  use fall through
+            case 600:
+                title = "Senior Manager";
+                break;
+            default:
+                title = "Employee";
+                break;
+
+        } 
+
+        return title;
+
+    }
+
+    public static string SKU(string SKUCode){
+        // SKU = Stock Keeping Unit
+        //string sku = "01-MN-L";
+
+        string[] features = SKUCode.Split('-');
+
+        string type = "" ;
+        string color = "";
+        string size = "";
+
+        switch (features[0])
+        {
+            case "01":
+                type = "Sweat shirt";
+                break;
+            case "02":
+                type = "T-Shirt";
+                break;
+            case "03":
+                type = "Sweat pants";
+                break;
+            default:
+                type = "Other";
+                break;
+        }
+
+        switch (features[1]) {
+
+            case "BL":
+                color = "Black";
+                break;
+            case "MN":
+                color = "Maroon";
+                break;
+            default:
+                color = "White";
+                break;
+        }
+
+        switch (features[2]){
+            
+            case "S":
+                size = "Small";
+                break;
+            case "M":
+                size = "Medium";
+                break;
+            case  "L":
+                size = "Large";
+                break;
+            default:
+                size = "One Size Fits All";
+                break;
+        }
+
+        
+        string title =  $"Product: {size} {color} {type}";
+        Console.WriteLine(title);
+        return title;
+    }
+    public static int min_of_three(int x, int y, int z){
+
+        int min = x;
+
+        if(y < min){
+            min = y;
+        }
+        if(z < min){
+            min = z;
+        }
+
+        return min;
+
+        // The logical AND operator:    && 
+        // The logical OR operator:     || 
+    }
+
+    // The for statement iterates through a code block a specific number of times.
+    public static void drawSquare(int size){
+
+        for(int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                Console.Write("*");
+            }
+            Console.WriteLine("");
+        }
+    }
+
+    public static string coinFlip(){
+
+        Random rand = new Random();
+        int roll = rand.Next(0,2);
+
+        // The conditional operator ?:, commonly known as the ternary conditional operator, 
+        // evaluates a Boolean expression, and returns the result of evaluating one of two expressions, 
+        // depending on whether the Boolean expression evaluates to true or false.
+        // Use the conditional operator when you need to add branching logic inline.
+        return (roll == 0) ? "heads" : "tails";
+    }
+
+    public static bool isEven(int number){
+        return number % 2 == 0;
     }
 }
