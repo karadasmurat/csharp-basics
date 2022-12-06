@@ -7,9 +7,10 @@
         Basics basics = new Basics();
         // basics.variable_basics();
         // basics.arrayBasics();
-        // basics.stringBasics();
+        basics.stringBasics();
+        // basics.dateTimeBasics();
         // basics.conversionBasics();
-        basics.formattingBasics();
+        //basics.formattingBasics();
 
         // Console.WriteLine(Basics.getEmployeeTitle(300)); 
         // Console.WriteLine(Basics.coinFlip()); 

@@ -36,7 +36,8 @@ class Basics{
         int myInt = myByte;     // Since any byte value can easily fit inside of an int, the compiler implicitly converts.
 
         int x = 333;
-        //byte bx = x;          // Cannot implicitly convert type 'int' to 'byte'
+        // byte bx = x;          // Cannot implicitly convert type 'int' to 'byte'
+        // But what if you know that the conversion is okay?
         byte bx = (byte)x;      // Narrowing conversion, we'll need to perform a cast.
 
         Console.WriteLine($"byte: {myByte} int: {myInt}");
@@ -61,12 +62,51 @@ class Basics{
         // The code you write should communicate your intent to both the compiler and to other developers who may read your code. 
         // Because you're likely to be the one reading your own code, sometimes months after you originally wrote it, you should focus on writing code that can be easily understood. 
         // Write code that is easily readable and understandable.
+        int widgetsSold = 7;
+        string firstName = "Bob";
 
         // Variable scope is the visibility of the variable to the other code in your application. 
         // A locally scoped variable is only accessible inside of the code block in which it's defined.
         
-        string firstName = "Bob";
-        int widgetsSold = 7;
+        
+
+        //byte  : 1 byte  -  8bits: 2^8 = 256 - [0, 255]
+        //short : 2 bytes - 16bits: 2^6 * 2^10(K)
+        //int   : 4 bytes - 32bits: +- 2^31 ~ 2^2 * 2^30(B)
+        long myLong = 1L; // 8 bytes - 64bits:
+        
+
+
+        Console.WriteLine($"byte: {sizeof(byte)} bytes, [{byte.MinValue:N0}, {byte.MaxValue:N0}]");       // [0, 255]
+
+        Console.WriteLine($"ushort: {sizeof(ushort)} bytes, [{ushort.MinValue:N0}, {ushort.MaxValue:N0}]"); // [0, 65.535]
+        Console.WriteLine($"short: {sizeof(short)} bytes, [{short.MinValue:N0}, {short.MaxValue:N0}]");    // [-32.768, 32.767]
+        
+        Console.WriteLine($"uint: {sizeof(uint)} bytes, [{uint.MinValue:N0}, {uint.MaxValue:N0}]");       // [0, 4.294.967.295]
+        Console.WriteLine($"int: {sizeof(int)} bytes, [{int.MinValue:N0}, {int.MaxValue:N0}]");          // [-2.147.483.648, 2.147.483.647]
+
+        Console.WriteLine($"ulong: {sizeof(ulong)} bytes, [{ulong.MinValue:N0}, {ulong.MaxValue:N0}]");
+        Console.WriteLine($"long: {sizeof(long)} bytes, [{long.MinValue:N0}, {long.MaxValue:N0}]"); 
+
+        // Fractions
+        // “Floating-point variables have rounding problems associated with limits to their accuracy
+
+        float f = 100F;
+        decimal d = 100M;
+
+        // double is the default in C#. If you don’t specify the type for, say, 12.3, C# calls it a double.
+        Console.WriteLine($"float: {sizeof(float)} bytes, [{float.MinValue}, {float.MaxValue}]");
+        Console.WriteLine($"double: {sizeof(double)} bytes, [{double.MinValue}, {double.MaxValue}]"); 
+        Console.WriteLine($"decimal: {sizeof(decimal)} bytes, [{decimal.MinValue}, {decimal.MaxValue}]"); 
+
+        // Truncation is not the same thing as rounding. Truncation lops off the fractional part.
+        // Convert the temperature 41 degrees Fahrenheit.
+        int x = 5;
+        int y = 3;
+        int z = x/y;
+        Console.WriteLine($"{x} / {y} = {z}");
+        Console.WriteLine($"{y} / {x} = {y/x}");
+
 
         // What happens if we try to use the + symbol with both string and int values?
         // Both string concatenation and addition use the plus + symbol. 
@@ -77,6 +117,7 @@ class Basics{
 
         int sum = 7 + 5;
         int quotient = 5 / 10;  // 0
+
         // The remainder operator % tells you the remainder of int division.
         // When the modulus is 0, that means the dividend is divisible by the divisor.
         int remainder = 7 % 5;
@@ -101,7 +142,60 @@ class Basics{
         Console.WriteLine("Third: " + value);       // Third: 7
 
 
+        // Former C and C++ programmers are accustomed to using the int value 0 (zero) to mean false and nonzero to mean true. 
+        // That doesn’t work in C#.
+        bool thisIsABool = true;
+        Console.WriteLine($"bool: {sizeof(bool)} bytes, [{bool.FalseString}, {bool.TrueString}]");  //  [False, True]
 
+
+        // A character constant appears as a character surrounded by a pair of single quotation marks
+        // public const Char MinValue = '\0';           // null char 
+        // public const Char MaxValue = '\uffff';
+        char c = 'a';
+        Console.WriteLine($"char: {sizeof(char)} bytes, [{char.MinValue}, {char.MaxValue}]");
+
+        x = 66;
+        char chA = 'A';
+        char ch1 = '1';
+
+        c = (char) x;   // B
+        Console.WriteLine($"x: {x}, (char)x: {c}");
+
+        int int1 = Convert.ToInt32(ch1);
+
+        // The Char structure provides common operations
+        Console.WriteLine($"Char.IsDigit('A'): {Char.IsDigit(chA)}");   // False
+        Console.WriteLine($"Char.IsDigit('1'): {Char.IsDigit(ch1)}");   // True
+        Console.WriteLine($"Convert.ToInt32('1'): {int1}"); // 49
+
+        // stringBasics();
+
+        // Now the compiler infers the data type for you — it looks at the stuff on the right side of the assignment to see what type the left side is.
+        // The object you declare with var definitely has a C# data type, such as int, string, or double. You just don’t have to declare what it is.
+        var i = 5;
+        var s = "Hello C# 4.0";
+        var vol = 1.0;
+        Console.WriteLine($"{vol} : {vol.GetType()}");      // System.Double
+        
+
+
+
+    }
+
+    public void dateTimeBasics(){
+
+        DateTime now = DateTime.Now;
+        Console.WriteLine("Today is " + now.ToString("D"));
+        Console.WriteLine(now.DayOfYear);
+
+        DateTime today = DateTime.Today;
+        Console.WriteLine(today.AddHours(48).Day);
+
+        // TimeSpan represents a time interval:
+        TimeSpan timeSpan = new TimeSpan(1, 30, 0);
+        Console.WriteLine(now.Add(timeSpan));
+    }
+    public void randomBasics(){
 
         // Some methods don't rely on the current state of the application to work properly. 
         // In other words, stateless methods are implemented so that they can work without referencing or changing any values already stored in memory. 
@@ -236,12 +330,50 @@ class Basics{
     }
 
     public void stringBasics(){
+        // A string is a sequential collection of characters that's used to represent text. 
+        // “You can’t change a string object after creating it.
+        
+        string string01 = "abcd"; // Assign a string literal to a String variable.
+        
+        
+        // Create a string from a character array.
+        char[] charArray = { 'w', 'o', 'r', 'd' };
+        string string1 = new string(charArray);
+        Console.WriteLine(string1);
+
+        // Create a string that consists of a character repeated 20 times.
+        string string2 = new string('c', 3);
+        Console.WriteLine(string2);
+    
+        string string3 = "Today is " + DateTime.Now.ToString("D") + ".";
+        Console.WriteLine(string3);
+
+        // Check if the string is null or empty String.IsNullOrEmpty(s)
+        string string4 = "";    // empty string
+        string string5 = " ";   // NOT empty string
+        Console.WriteLine($"String.IsNullOrEmpty(\"\"): {String.IsNullOrEmpty(string4)}");  // True
+        Console.WriteLine($"String.IsNullOrEmpty(\" \"): {String.IsNullOrEmpty(string5)}");  // False
+
+        // Looping through a string
+        string favoriteFood = "CheeseBurgers";
+        int upperCnt = 0;
+        foreach(char c in favoriteFood){  
+            if(Char.IsUpper(c)) upperCnt++;
+        }
+        Console.WriteLine($"Number of uppercase chars: {upperCnt}");
+
 
         // before checking strings for equality, 
         // remove remove leading or trailing blank spaces and make sure both strings are all upper-case or all lower-case
         string value1 = " a";
         string value2 = "A ";
         Console.WriteLine(value1.Trim().ToLower() == value2.Trim().ToLower());
+
+        // CompareTo(): return less than zero, zero or greater than zero
+        string name1 = "name";
+        string name2 = "Name";
+        Console.WriteLine($"{name1.CompareTo(name2)}");
+
 
         // Word reversal challenge BEGIN
         string pangram = "The quick brown fox jumps over the lazy dog";
@@ -259,6 +391,23 @@ class Basics{
         Console.WriteLine(message);
         //  Word reversal challenge END
 
+
+        // Count words challenge BEGIN
+        // TODO - what about multiple whitespaces between words?
+        string sentence = " This string   consists of  a single     short sentence. ";
+        int nWords = 0;
+
+        string s1 = sentence.Trim();      
+        for (int ctr = 0; ctr < s1.Length; ctr++) {
+        if (Char.IsPunctuation(s1[ctr]) | Char.IsWhiteSpace(s1[ctr]))
+            nWords++;              
+        }
+        Console.WriteLine("The sentence\n   {0}\nhas {1} words.",s1, nWords); 
+
+        // b. foreach 
+        string[] _words = sentence.Trim().Split(" ");
+        Console.WriteLine($".Split(' '): The sentence\n   {sentence}\nhas {_words.Length} words.");
+        // Count words challenge END
     }
     public static char letterOfScore(double score){
 
